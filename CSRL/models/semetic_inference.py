@@ -54,7 +54,7 @@ class DomainDiscriminator(nn.Module):
             nn.Linear(128, 64),
             nn.ReLU(),
             nn.Dropout(0.5),
-            nn.Linear(64, num_domain)  # 假设有n个域
+            nn.Linear(64, num_domain) 
         )
         self.GRL=GRL()
 
