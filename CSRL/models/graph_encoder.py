@@ -56,19 +56,17 @@ class AttentionAgger(torch.nn.Module):
         self.WK = torch.nn.Linear(Qdim, Mdim)
 
     def forward(self, Q, K, V, mask=None):
-        #将Q，K映射到同一维度
+       
         Q, K = self.WQ(Q), self.WK(K)
-        # 把点成的结果除以一个常数，
-        # 这个值一般是采用上文提到的矩阵的第一个维度的开方，
-        # 当然也可以选择其他的值，然后把得到的结果做一个softmax的计算。
+     
         Attn = torch.matmul(Q, K.transpose(0, 1)) / math.sqrt(self.model_dim)
         if mask is not None:
-            #  -(1 << 32)表示二进制下第32位为1，其他位为0的数取反后再加1，即为一个非常小的负数。
+           
             Attn = torch.masked_fill(Attn, mask.bool(), -(1 << 32))
         Attn = torch.softmax(Attn, dim=-1)
-        # 将注意力权重矩阵的对角线上的值设置为0
+     
         Attn.diagonal().fill_(0)
-        # 对每个边的权重进行求和，得到每条边相对于整体的重要性程度
+ 
         Attn = torch.sum(Attn, dim=1)
         # Attn /= torch.sum(Attn)
         return Attn
