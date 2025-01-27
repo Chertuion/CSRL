@@ -55,7 +55,7 @@ class ImageEncoder(nn.Module):
         super(ImageEncoder, self).__init__()
 
         self.image_feature = nn.Linear(emb_dim, emb_dim)
-        self.attention = SelfAttention(emb_dim)  # 添加自注意力层
+        self.attention = SelfAttention(emb_dim) 
         self.fp_projection = torch.nn.Sequential(nn.Linear(167, 2 * emb_dim), nn.ReLU(),
                                            nn.Linear(2 * emb_dim, emb_dim))
         self.combine_projection = torch.nn.Sequential(nn.Linear(emb_dim * 2, 2 * emb_dim), nn.ReLU(),
@@ -73,7 +73,7 @@ class ImageEncoder(nn.Module):
         # h_combine = torch.cat((h_fp, h_image), dim=1)
         # Apply self-attention to the image features
 
-        # h_combine = self.attention(h_fp)  # 新增的注意力层处理
+        # h_combine = self.attention(h_fp)  
         # h_combine = self.combine_projection(h_combine)
 
         p_image = self.spu_fw(h_fp)
